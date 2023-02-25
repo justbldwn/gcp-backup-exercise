@@ -2,4 +2,4 @@
 
 
 ## Workflow Diagram
-![diagram](./gcp-backup-diagram.png)
+![diagram](docs/gcp-backup-diagram.png)
