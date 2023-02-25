@@ -1,8 +1,10 @@
 """Given a `project_to_check` from sub msg, see if any tables need to be backed up."""
 from datetime import datetime, timedelta
 
-from google.cloud import pubsub_v1
-from google.cloud import bigquery
+from google.cloud import bigquery, logging, pubsub_v1
+
+log_client = logging.Client()
+logger = log_client.logger("gcp-logs")
 
 
 def check_backup_callback(message):
@@ -16,6 +18,10 @@ def check_backup_callback(message):
     last_24h_datetime = datetime.now() - timedelta(days=1)
     project_to_check = message.data.project_to_check
 
+    logging.info(
+        f"Checking for all tables that were last modified within 24 hours in {project_to_check}"
+    )
+
     client = bigquery.Client(project=project_to_check)
     dataset_list = list(client.list_datasets())
 
@@ -28,6 +34,8 @@ def check_backup_callback(message):
             # if the table's last modified time is within last 24 hours,
             # send a request to the backup pub-sub topic to run backup script
             if table.modified <= last_24h_datetime:
+                logger.info(f"Found table {table.table_id} was last modified at {table.modified}")
+
                 publisher = pubsub_v1.PublisherClient()
                 topic_path = publisher.topic_path(
                     "gcp-platform-team-project",
@@ -35,6 +43,11 @@ def check_backup_callback(message):
                 )
 
                 publisher.create_topic(name=topic_path)
+
+                logger.info(
+                    f"Publishing message at {topic_path} to backup {table.table_id} to Cloud Storage"
+                )
+
                 publisher.publish(
                     topic_path,
                     b"Table to backup found.",
@@ -57,7 +70,11 @@ def process_sub_msg():
             "check-project_tables-sub"
         )
 
+        logging.info(
+            f"Creating subscription at {subscription_path} with topic name {topic_path}"
+        )
         subscriber.create_subscription(subscription_path, topic=topic_path)
+
         subscriber.subscribe(subscription_path, check_backup_callback)
 
 

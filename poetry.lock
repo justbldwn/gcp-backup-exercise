@@ -65,6 +65,31 @@ reauth = ["pyu2f (>=0.1.5)"]
 requests = ["requests (>=2.20.0,<3.0.0dev)"]
 
 [[package]]
+name = "google-cloud-appengine-logging"
+version = "1.3.0"
+description = "Google Cloud Appengine Logging API client library"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+google-api-core = {version = ">=1.34.0,<2.0.0 || >=2.11.0,<3.0.0dev", extras = ["grpc"]}
+proto-plus = ">=1.22.0,<2.0.0dev"
+protobuf = ">=3.19.5,<3.20.0 || >3.20.0,<3.20.1 || >3.20.1,<4.21.0 || >4.21.0,<4.21.1 || >4.21.1,<4.21.2 || >4.21.2,<4.21.3 || >4.21.3,<4.21.4 || >4.21.4,<4.21.5 || >4.21.5,<5.0.0dev"
+
+[[package]]
+name = "google-cloud-audit-log"
+version = "0.2.5"
+description = "Google Cloud Audit Protos"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+googleapis-common-protos = ">=1.56.2,<2.0dev"
+protobuf = ">=3.19.5,<3.20.0 || >3.20.0,<3.20.1 || >3.20.1,<4.21.1 || >4.21.1,<4.21.2 || >4.21.2,<4.21.3 || >4.21.3,<4.21.4 || >4.21.4,<4.21.5 || >4.21.5,<5.0.0dev"
+
+[[package]]
 name = "google-cloud-bigquery"
 version = "3.6.0"
 description = "Google BigQuery API client library"
@@ -107,6 +132,23 @@ google-auth = ">=1.25.0,<3.0dev"
 
 [package.extras]
 grpc = ["grpcio (>=1.38.0,<2.0dev)"]
+
+[[package]]
+name = "google-cloud-logging"
+version = "3.5.0"
+description = "Stackdriver Logging API client library"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+google-api-core = {version = ">=1.33.2,<2.0.0 || >=2.8.0,<3.0.0dev", extras = ["grpc"]}
+google-cloud-appengine-logging = ">=0.1.0,<2.0.0dev"
+google-cloud-audit-log = ">=0.1.0,<1.0.0dev"
+google-cloud-core = ">=2.0.0,<3.0.0dev"
+grpc-google-iam-v1 = ">=0.12.4,<1.0.0dev"
+proto-plus = ">=1.22.0,<2.0.0dev"
+protobuf = ">=3.19.5,<3.20.0 || >3.20.0,<3.20.1 || >3.20.1,<4.21.0 || >4.21.0,<4.21.1 || >4.21.1,<4.21.2 || >4.21.2,<4.21.3 || >4.21.3,<4.21.4 || >4.21.4,<4.21.5 || >4.21.5,<5.0.0dev"
 
 [[package]]
 name = "google-cloud-pubsub"
@@ -340,7 +382,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<3.11"
-content-hash = "34d7998be33128c1a50d1f429c8dd3d85300d26332e02ec5ac6380be30e157c6"
+content-hash = "a23db23f79c3035eafe5fcfc3b39fe7b9be280a33ef2da14d5770fe548f93809"
 
 [metadata.files]
 cachetools = [
@@ -449,6 +491,14 @@ google-auth = [
     {file = "google-auth-2.16.1.tar.gz", hash = "sha256:5fd170986bce6bfd7bb5c845c4b8362edb1e0cba901e062196e83f8bb5d5d32c"},
     {file = "google_auth-2.16.1-py2.py3-none-any.whl", hash = "sha256:75d76ea857df65938e1f71dcbcd7d0cd48e3f80b34b8870ba229c9292081f7ef"},
 ]
+google-cloud-appengine-logging = [
+    {file = "google-cloud-appengine-logging-1.3.0.tar.gz", hash = "sha256:d52f14e1e9a993797a086eff3d4772dea7908390c6ad612d26281341f17c9a49"},
+    {file = "google_cloud_appengine_logging-1.3.0-py2.py3-none-any.whl", hash = "sha256:97272ed554c9077d666e045b6686b46cb67e9b072aab76726c5404d6098b52d2"},
+]
+google-cloud-audit-log = [
+    {file = "google-cloud-audit-log-0.2.5.tar.gz", hash = "sha256:86e2faba3383adc8fd04a5bd7fd4f960b3e4aedaa7ed950f2f891ce16902eb6b"},
+    {file = "google_cloud_audit_log-0.2.5-py2.py3-none-any.whl", hash = "sha256:18b94d4579002a450b7902cd2e8b8fdcb1ea2dd4df3b41f8f82be6d9f7fcd746"},
+]
 google-cloud-bigquery = [
     {file = "google-cloud-bigquery-3.6.0.tar.gz", hash = "sha256:5886c14f29097158d59afa74a6732dbdd583e6ef30dc9934a56ad532906de356"},
     {file = "google_cloud_bigquery-3.6.0-py2.py3-none-any.whl", hash = "sha256:ed875c3a52050d140660850f04aaa59c1ec03b420a31fa7cc643a1726fc784d1"},
@@ -456,6 +506,10 @@ google-cloud-bigquery = [
 google-cloud-core = [
     {file = "google-cloud-core-2.3.2.tar.gz", hash = "sha256:b9529ee7047fd8d4bf4a2182de619154240df17fbe60ead399078c1ae152af9a"},
     {file = "google_cloud_core-2.3.2-py2.py3-none-any.whl", hash = "sha256:8417acf6466be2fa85123441696c4badda48db314c607cf1e5d543fa8bdc22fe"},
+]
+google-cloud-logging = [
+    {file = "google-cloud-logging-3.5.0.tar.gz", hash = "sha256:f11544a21ea3556f70ebac7bc338ffa8a197913834ecdd8853d176b870823aaa"},
+    {file = "google_cloud_logging-3.5.0-py2.py3-none-any.whl", hash = "sha256:def71f6a7bb6652ce8fee18f0cad8c32157ac606fe1512802254a471bcdfe5e8"},
 ]
 google-cloud-pubsub = [
     {file = "google-cloud-pubsub-2.15.0.tar.gz", hash = "sha256:3ca557fc0d404f712a1da8412e71a55cd63b6a265975b0a6bec43ff8a355ed40"},
