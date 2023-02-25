@@ -6,8 +6,10 @@ From there, send a message to a topic ("check-project-tables") in a general
 project ("gcp-platform-team-project") to run a script to check what
 tables within the project passed to the topic are eligible to be backed up.
 """
-from google.cloud import resourcemanager_v3
-from google.cloud import pubsub_v1
+from google.cloud import resourcemanager_v3, logging, pubsub_v1
+
+log_client = logging.Client()
+logger = log_client.logger("gcp-logs")
 
 
 def main():
@@ -21,13 +23,15 @@ def get_project_list():
     Returns:
         ListProjectsPager: A page of the response received from the ListProjects method.
     """
-    rm_client = resourcemanager_v3.ProjectsClient()
+    parent_org = "my_organization_name"
 
+    rm_client = resourcemanager_v3.ProjectsClient()
     request = resourcemanager_v3.ListProjectsRequest(
-        parent="my_organization_name",
+        parent=parent_org,
     )
 
     list_of_projects = rm_client.list_projects(request=request)
+    logging.info(f"Successfully found projects in parent organization {parent_org}")
 
     return list_of_projects
 
@@ -52,8 +56,14 @@ def publish_project(list_of_projects):
     )
 
     for project in list_of_projects:
+        logging.info(
+            f"Creating topic at {topic_path} for project: {project.project_id}"
+        )
         publisher.create_topic(name=topic_path)
 
+        logging.info(
+            f"Publishing message to topic at {topic_path} for project: {project.project_id}"
+        )
         future = publisher.publish(
             topic_path,
             b"Project found, check tables if they should be backed up.",

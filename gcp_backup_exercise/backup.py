@@ -1,8 +1,10 @@
 """Given a `table_to_backup` from sub msg, backup table to Cloud Storage."""
 from datetime import datetime, timedelta
 
-from google.cloud import pubsub_v1
-from google.cloud import bigquery
+from google.cloud import bigquery, logging, pubsub_v1
+
+log_client = logging.Client()
+logger = log_client.logger("gcp-logs")
 
 
 def run_backup_callback(message):
@@ -20,14 +22,25 @@ def run_backup_callback(message):
     project = message.data.table_to_backup.project
     dataset_id = message.data.table_to_backup.dataset_id
     table_id = message.data.table_to_backup.table_id
+    gcs_path = f"gs://my-organization-bucket-name/{project}/backup/{dataset_id}/{table_id}/*.csv"
 
+    logging.info(
+        f"Processing backup for {dataset_id}.{table_id} in project: {project}"
+    )
     client = bigquery.Client(project=project)
     dataset_ref = bigquery.DatasetReference(project, dataset_id)
     table_ref = dataset_ref.table(table_id)
 
+    logging.info(
+        f"Starting backup of {dataset_id}.{table_id} to {gcs_path}"
+    )
     backup_job = client.extract_table(
         table_ref,
         f"gs://my-organization-bucket-name/{project}/backup/{dataset_id}/{table_id}/*.csv"
+    )
+
+    logging.info(
+        f"Completed backup of {dataset_id}.{table_id} to {gcs_path}"
     )
 
     backup_job.result()
@@ -48,7 +61,11 @@ def process_backup_sub_msg():
             "run-bq-backup-to-cs-sub"
         )
 
+        logging.info(
+            f"Creating subscription at {subscription_path} with topic name {topic_path}"
+        )
         subscriber.create_subscription(subscription_path, topic=topic_path)
+
         future = subscriber.subscribe(subscription_path, run_backup_callback)
 
 
