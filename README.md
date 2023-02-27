@@ -10,10 +10,10 @@ A workflow to process data backups on Google Cloud Platform (GCP). This includes
 
 ### Google Cloud Scheduler
 #### Purpose:
-Used to manage the automated scheduling of the backup workflow.
+Used to manage the automated scheduling of the `gcp-backup-exercise` workflow.
 
 #### Usage:
-- [x] Setup a scheduled daily job to run at 11PM EST to run the GCP backup workflow.
+- [x] Setup a scheduled job **daily at 11PM EST** to run the GCP backup workflow.
 - [x] Setup an alerting policy to send an email for jobs that catch failures in the Cloud Functions
 
 
@@ -22,7 +22,7 @@ Used to manage the automated scheduling of the backup workflow.
 Used as an event messaging queue to help kick-off various Google Cloud Functions scripts throughout the workflow.
 
 #### Usage:
-Pub/Sub topics for Cloud Scheduler and Cloud Functions to interact with and help orchestrate each step in the backup workflow.
+Pub/Sub topics for Cloud Scheduler and Cloud Functions to interact with and help orchestrate each step in the `gcp-backup-exercise` workflow.
 
 The Pub/Sub topics will all be created in a general project called `gcp-platform-team-project`. This way, the topics don't need to be replicated across each individual project that holds tables to be backed up.
 
