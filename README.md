@@ -9,21 +9,19 @@ A workflow to process data backups on Google Cloud Platform (GCP). This includes
 ## GCP Components Used
 
 ### Google Cloud Scheduler
-**Purpose:**
+#### Purpose:
 Used to manage the automated scheduling of the backup workflow.
 
-**Usage:**
+#### Usage:
 - [x] Setup a scheduled daily job to run at 11PM EST to run the GCP backup workflow.
 - [x] Setup an alerting policy to send an email for jobs that catch failures in the Cloud Functions
 
 
 ### Google Pub/Sub
-**Purpose:**
-
+#### Purpose:
 Used as an event messaging queue to help kick-off various Google Cloud Functions scripts throughout the workflow.
 
-**Usage:**
-
+#### Usage:
 Pub/Sub topics for Cloud Scheduler and Cloud Functions to interact with and help orchestrate each step in the backup workflow.
 
 The Pub/Sub topics will all be created in a general project called `gcp-platform-team-project`. This way, the topics don't need to be replicated across each individual project that holds tables to be backed up.
@@ -38,7 +36,7 @@ The Pub/Sub topics will all be created in a general project called `gcp-platform
 ### Google Cloud Functions
 Used to execute Python scripts at various points throughout the workflow. Pseudocode of the example Python scripts are included in the `gcp_backup_exercise/` directory.
 
-**Usage:**
+#### Usage:
 #### `gcp_backup_exercise/projects.py`
 Script to scan a GCP organization to find all projects within the orgnization. For each project within the organization, publish a message to the `check-project-tables` Pub/Sub topic with a project id to check for tables to backup.
 
@@ -52,8 +50,8 @@ Script to backup a table in BigQuery to Cloud Storage.
 Used as a data storage location for any tables that are backed up from BigQuery. The GCS bucket **will be in the same project as the BigQuery table**, and will also sit in the same region. Because Cloud Storage is immutable, this can ensure the backup data cannot be altered.
 
 ### Google Cloud Logging
-**Purpose:**
+#### Purpose:
 Used to collect and centralize success & failure logs for each step of the workflow.
 
-**Usage:**
+#### Usage:
 Called in each Cloud Function script
