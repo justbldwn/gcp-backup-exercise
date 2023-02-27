@@ -1,7 +1,7 @@
 # gcp-backup-exercise
 
 ## Summary
-A workflow to process data backups on Google Cloud Platform (GCP). This includes the architecture and pseudocode required to orchestrate, execute, and log the process.
+A workflow to process data backups on Google Cloud Platform (GCP). This includes the architecture and pseudocode required to orchestrate, execute, and log the backup process for all projects within a GCP organization.
 
 ## Workflow Diagram
 ![diagram](docs/gcp-backup-diagram.png)
