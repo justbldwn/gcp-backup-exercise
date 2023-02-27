@@ -10,11 +10,11 @@ A workflow to process data backups on Google Cloud Platform (GCP). This includes
 
 ### Google Cloud Scheduler
 #### Purpose:
-Used to manage the automated scheduling of the backup workflow.
+Used to manage the automated scheduling of the `gcp-backup-exercise` workflow.
 
 #### Usage:
-- [x] Setup a scheduled daily job to run at 11PM EST to run the GCP backup workflow.
-- [x] Setup an alerting policy to send an email for jobs that catch failures in the Cloud Functions
+- [x] Setup a scheduled job **daily at 11PM EST** to run the GCP backup workflow.
+- [x] Setup an alerting policy to send an email for jobs that catch failures in the Cloud Functions steps.
 
 
 ### Google Pub/Sub
@@ -22,19 +22,21 @@ Used to manage the automated scheduling of the backup workflow.
 Used as an event messaging queue to help kick-off various Google Cloud Functions scripts throughout the workflow.
 
 #### Usage:
-Pub/Sub topics for Cloud Scheduler and Cloud Functions to interact with and help orchestrate each step in the backup workflow.
+Pub/Sub topics for Cloud Scheduler and Cloud Functions to interact with and help orchestrate each step in the `gcp-backup-exercise` workflow.
 
 The Pub/Sub topics will all be created in a general project called `gcp-platform-team-project`. This way, the topics don't need to be replicated across each individual project that holds tables to be backed up.
 
 | Topic name | Description |
 |------------|-------------|
-|**start-backup-process** | Generic pub/Sub topic as the entry point to `gcp_backup_exercise/projects.py` |
-|**check-project-tables** | Generic pub/Sub topic as the entry point to `gcp_backup_exercise/scan.py`, publishes message to topic with `project_to_check` field with project id to check which tables are eligible to be backed up |
-|**run-bq-backup-to-cs** | Generic pub/Sub topic as the entry point to `gcp_backup_exercise/backup.py`, publishes message to topic with `table_to_backup` field with the table id to backup in a given project |
+|**start-backup-process** | Generic Pub/Sub topic as the entry point to `gcp_backup_exercise/projects.py` |
+|**check-project-tables** | Generic Pub/Sub topic as the entry point to `gcp_backup_exercise/scan.py`, publishes message to topic with `project_to_check` field with project id to check which tables are eligible to be backed up |
+|**run-bq-backup-to-cs** | Generic Pub/Sub topic as the entry point to `gcp_backup_exercise/backup.py`, publishes message to topic with `table_to_backup` field with the table id to backup in a given project |
 
 
 ### Google Cloud Functions
 Used to execute Python scripts at various points throughout the workflow. Pseudocode of the example Python scripts are included in the `gcp_backup_exercise/` directory.
+
+**Important Note:** I chose Google Cloud Functions for the execution of the Python scripts below, but this could alternatively be hosted/executed via **Google Cloud Run** using a Python container image, too.
 
 #### Usage:
 #### `gcp_backup_exercise/projects.py`
