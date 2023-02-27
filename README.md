@@ -47,11 +47,11 @@ Script to scan a GCP project to find all of the datasets and tables within the p
 Script to backup a table in BigQuery to Cloud Storage.
 
 ### Google Cloud Storage
-Used as a data storage location for any tables that are backed up from BigQuery. The GCS bucket **will be in the same project as the BigQuery table**, and will also sit in the same region. Because Cloud Storage is immutable, this can ensure the backup data cannot be altered.
+Used as a data storage location for any tables that are backed up from BigQuery. The GCS bucket **will be in the same project as the BigQuery table**, and will also sit in the same region. Because Cloud Storage is immutable, this can ensure the backup data cannot be altered. If needed, a retention policy can be added to the bucket/path to clean out old backups.
 
 ### Google Cloud Logging
 #### Purpose:
 Used to collect and centralize success & failure logs for each step of the workflow.
 
 #### Usage:
-Called in each Cloud Function script
+Called in each Cloud Function script to output information about what is occuring within the worfklow. Cloud Logging is also linked to Cloud Scheduler so Cloud Scheduler can send an email notification on a job failure.
