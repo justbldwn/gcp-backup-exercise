@@ -38,16 +38,25 @@ Used to execute Python scripts at various points throughout the workflow. Pseudo
 
 **Usage:**
 #### `gcp_backup_exercise/projects.py`
-The purpose of this script is to scan a GCP organization to find all projects within the orgnization. For each project within the organization, publish a message to the `check-project-tables` Pub/Sub topic with a project id to check for tables to backup.
+
+**Purpose:**
+Script to scan a GCP organization to find all projects within the orgnization. For each project within the organization, publish a message to the `check-project-tables` Pub/Sub topic with a project id to check for tables to backup.
 
 #### `gcp_backup_exercise/scan.py`
-The purpose of this script is to scan a GCP project to find all of the datasets and tables within the project and see if any tables have been modified within the last 24 hours. If so, publish a message to the `run-bq-backup-to-cs` Pub/Sub topic with the table to backup to Cloud Storage.
+
+**Purpose:**
+Script to scan a GCP project to find all of the datasets and tables within the project and see if any tables have been modified within the last 24 hours. If so, publish a message to the `run-bq-backup-to-cs` Pub/Sub topic with the table to backup to Cloud Storage.
 
 #### `gcp_backup_exercise/backup.py`
-The purpose of this script is to backup a table in BigQuery to Cloud Storage.
+**Purpose:**
+Script to backup a table in BigQuery to Cloud Storage.
 
 ### Google Cloud Storage
-Used as a data storage location for any tables that are backed up from BigQuery. The GCS bucket will be in the same project as the BigQuery table, and will also sit in the same region.
+Used as a data storage location for any tables that are backed up from BigQuery. The GCS bucket **will be in the same project as the BigQuery table**, and will also sit in the same region. Because Cloud Storage is immutable, this can ensure the backup data cannot be altered.
 
 ### Google Cloud Logging
+**Purpose:**
 Used to collect and centralize success & failure logs for each step of the workflow.
+
+**Usage:**
+Called in each Cloud Function script
