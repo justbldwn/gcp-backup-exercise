@@ -1,5 +1,5 @@
 """
-The purpose of this script is to scan as GCP organization to
+The purpose of this script is to scan a GCP organization to
 find all projects within the orgnization.
 
 From there, send a message to a topic ("check-project-tables") in a general
