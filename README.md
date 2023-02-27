@@ -1,7 +1,7 @@
 # gcp-backup-exercise
 
 ## Summary
-A workflow to process data backups on Google Cloud Platform (GCP). This includes the architecture and pseudo-code required to orchestrate, execute, and log the process.
+A workflow to process data backups on Google Cloud Platform (GCP). This includes the architecture and pseudocode required to orchestrate, execute, and log the process.
 
 ## Workflow Diagram
 ![diagram](docs/gcp-backup-diagram.png)
@@ -10,9 +10,11 @@ A workflow to process data backups on Google Cloud Platform (GCP). This includes
 
 ### Google Cloud Scheduler
 **Purpose:**
+
 Used to manage the automated scheduling of the backup workflow.
 
 **Usage:**
+
 - [x] Setup a scheduled daily job to run at 11PM EST to run the GCP backup workflow.
 - [x] Setup an alerting policy to send an email for jobs that catch failures in the Cloud Functions
 
@@ -34,21 +36,16 @@ The Pub/Sub topics will all be created in a general project called `gcp-platform
 
 
 ### Google Cloud Functions
-Used to execute Python scripts at various points throughout the workflow. Pseudocode of the example Python scripts are included in the `gcp_backup_exercise` directory.
+Used to execute Python scripts at various points throughout the workflow. Pseudocode of the example Python scripts are included in the `gcp_backup_exercise/` directory.
 
 **Usage:**
 #### `gcp_backup_exercise/projects.py`
-
-**Purpose:**
 Script to scan a GCP organization to find all projects within the orgnization. For each project within the organization, publish a message to the `check-project-tables` Pub/Sub topic with a project id to check for tables to backup.
 
 #### `gcp_backup_exercise/scan.py`
-
-**Purpose:**
 Script to scan a GCP project to find all of the datasets and tables within the project and see if any tables have been modified within the last 24 hours. If so, publish a message to the `run-bq-backup-to-cs` Pub/Sub topic with the table to backup to Cloud Storage.
 
 #### `gcp_backup_exercise/backup.py`
-**Purpose:**
 Script to backup a table in BigQuery to Cloud Storage.
 
 ### Google Cloud Storage
